@@ -41,7 +41,7 @@ TIM_HandleTypeDef htim2;
 uint16_t hadc1_val;
 uint16_t hadc1_val_last;
 uint16_t test_freq;
-float32_t sinewave_val[1024];
+uint32_t sinewave_val[64];
 float32_t fftout[1024];
 float32_t fftout_amp[1024];
 float32_t  testInput_f32[NPT];
@@ -60,7 +60,7 @@ static void MX_TIM2_Config(void);
 static void MX_DMA_Init(void);
 /* User prototypes ----------*/
 uint16_t ADC_GetValue(ADC_HandleTypeDef *hadc);
-void Sine_CalValue(float32_t* pdata, uint16_t datasize);
+void Sine_CalValue(uint32_t* pdata, uint16_t datasize);
 
 /* Private user code ---------------------------------------------------------*/
 void arm_rfft_fast_f32_app(void) 
@@ -101,6 +101,7 @@ void arm_rfft_fast_f32_app(void)
   * @brief  The application entry point.
   * @retval int
   */
+	uint16_t temp;
 int main(void)
 {
 	uint16_t i;
@@ -116,12 +117,14 @@ int main(void)
   __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* Initialize all configured peripherals */
-	Sine_CalValue(sinewave_val,1024);
+	Sine_CalValue(sinewave_val,64);
   MX_GPIO_Init();
   MX_ADC1_Init();
+	MX_DMA_Init();
   MX_DAC_Init();
 	MX_TIM2_Config();
   MX_USART2_UART_Init();
+	
 	
 
   /* 状态指示灯亮（LD2绿灯） */
@@ -137,28 +140,29 @@ int main(void)
 	  /* initialize S struct */ 
   while (1)
   {
+
 		/*10kHz Sinwave Amp=825mV DCBias=1.65V */ 
 //		testInput_f32[i] = 1000*arm_sin_f32(PI2*i*2000.0/Fs) + 1500;
     
-//		HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, testInput_f32[i]);//设定DAC通道1（PA4的值）[0-4095]
-    testInput_f32[i] = ADC_GetValue(&hadc1);
-		i++;
-//		VOSC_SendOne_uint16(&huart2, sinewave_val[i]);
-    if(i==1000)
-    {
-//			arm_rfft_fast_init_f32(&S, 1024); 
-//      arm_rfft_fast_f32(&S, sinewave_val, fftout, 0); 
-//      arm_cmplx_mag_f32(fftout, fftout_amp, 1024); 
-			for(i=0;i<1024;i++)
-//			{
-//				if(fftout_amp[i]>50000)
-//					test_freq = 195*i;
-					VOSC_SendOne_uint16(&huart2, (uint16_t)testInput_f32[i]);
-//				VOSC_SendTwo_uint16(&huart2, (uint16_t)fftout_amp[i],test_freq);
-//			}
-			i=0;
-			HAL_Delay(1000);
-    }
+//		HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, sinewave_val[i]);//设定DAC通道1（PA4的值）[0-4095]
+//    temp = ADC_GetValue(&hadc1);
+//		i++;
+////		VOSC_SendOne_uint16(&huart2, sinewave_val[i]);
+//    if(i==1000) i=0;
+////    {
+////			arm_rfft_fast_init_f32(&S, 1024); 
+////      arm_rfft_fast_f32(&S, sinewave_val, fftout, 0); 
+////      arm_cmplx_mag_f32(fftout, fftout_amp, 1024); 
+////			for(i=0;i<1024;i++)
+////			{
+////				if(fftout_amp[i]>50000)
+////					test_freq = 195*i;
+////					VOSC_SendOne_uint16(&huart2, (uint16_t)temp);
+////				VOSC_SendTwo_uint16(&huart2, (uint16_t)fftout_amp[i],test_freq);
+////			}
+////			i=0;
+//			HAL_Delay(10);
+//    }
 //		printf("hadc1_val=%d\n",hadc1_val);
   }
 }
@@ -167,11 +171,11 @@ int main(void)
 	& @param * @pdata pointer of the data @datasize size of the pointer
   * @retval None
   */
-void Sine_CalValue(float32_t* pdata, uint16_t datasize)
+void Sine_CalValue(uint32_t* pdata, uint16_t datasize)
 {
 	for(int i=0; i<datasize; i++)
 	{
-		pdata[i] = 1000*arm_sin_f32(PI2*i*2000.0/Fs) + 1500;
+		pdata[i] = 1000*arm_sin_f32(PI2*i/64.0) + 1500;
 	}
 }
 /**
@@ -316,7 +320,7 @@ static void MX_DAC_Init(void)
   /** DAC channel OUT1 config 
   */
   sConfig.DAC_Trigger = DAC_TRIGGER_T2_TRGO;
-  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
+  sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_DISABLE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
@@ -324,7 +328,7 @@ static void MX_DAC_Init(void)
   /** DAC通道1（PA4）打开 
   */
 //	HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
-	HAL_DAC_Start_DMA(&hdac,DAC_CHANNEL_1,(uint32_t *)sinewave_val,1024,DAC_ALIGN_12B_R);
+	HAL_DAC_Start_DMA(&hdac,DAC_CHANNEL_1,(uint32_t *)sinewave_val,64,DAC_ALIGN_12B_R);
 }
 
 /**
@@ -367,12 +371,12 @@ static void MX_DMA_Init(void)
   /* DMA controller clock enable */
   __HAL_RCC_DMA1_CLK_ENABLE();
 
-  hdma.Init.Channel = DMA_CHANNEL_5;
+  hdma.Init.Channel = DMA_CHANNEL_7;
   hdma.Init.Direction = DMA_MEMORY_TO_PERIPH;
   hdma.Init.PeriphInc = DMA_PINC_DISABLE;
   hdma.Init.MemInc = DMA_MINC_ENABLE;
-  hdma.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-  hdma.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+  hdma.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+  hdma.Init.MemDataAlignment = DMA_PDATAALIGN_WORD;
   hdma.Init.Mode = DMA_CIRCULAR;
   hdma.Init.Priority = DMA_PRIORITY_MEDIUM;
   hdma.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
@@ -380,11 +384,11 @@ static void MX_DMA_Init(void)
   hdma.Init.MemBurst = DMA_MBURST_SINGLE;
   hdma.Init.PeriphBurst = DMA_PBURST_SINGLE;
 
-  hdma.Instance = DMA2_Stream5;
+  hdma.Instance = DMA1_Stream5;
 
   HAL_DMA_Init(&hdma);
 
-  HAL_DMA_Start(&hdma,(uint32_t)sinewave_val,(uint32_t)&(DAC->DHR12R1),32);
+  HAL_DMA_Start(&hdma,(uint32_t)&sinewave_val,(uint32_t)&(DAC->DHR12R1),64);
 
   // /* DMA interrupt init */
   // /* DMA1_Stream5_IRQn interrupt configuration */
@@ -401,13 +405,17 @@ static void MX_DMA_Init(void)
   */
 static void MX_TIM2_Config(void)
 {
+	HAL_TIM_Base_MspInit(&htim2);
+	
+	__HAL_RCC_TIM2_CLK_ENABLE();
+	
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 9999;
+  htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 8399;
+  htim2.Init.Period = 10;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -425,6 +433,7 @@ static void MX_TIM2_Config(void)
   {
     Error_Handler();
   }
+	HAL_TIM_Base_Start(&htim2);
 }
 
 /**
