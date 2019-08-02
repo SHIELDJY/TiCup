@@ -101,7 +101,6 @@ void arm_rfft_fast_f32_app(void)
   * @brief  The application entry point.
   * @retval int
   */
-	uint16_t temp;
 int main(void)
 {
 	uint16_t i;
@@ -120,12 +119,10 @@ int main(void)
 	Sine_CalValue(sinewave_val,64);
   MX_GPIO_Init();
   MX_ADC1_Init();
-	MX_DMA_Init();
-  MX_DAC_Init();
-	MX_TIM2_Config();
+//	MX_DMA_Init();
+//  MX_DAC_Init();
+//	MX_TIM2_Config();
   MX_USART2_UART_Init();
-	
-	
 
   /* 状态指示灯亮（LD2绿灯） */
 	HAL_GPIO_WritePin(LD2_GPIO_Port,LD2_Pin,GPIO_PIN_SET);
@@ -134,18 +131,13 @@ int main(void)
 
   /* Output a message on Hyperterminal using printf function */
   printf("Hello World!\n\r");
-	printf("hadc1_val=%d\n",hadc1_val);
+//	printf("hadc1_val=%d\n",hadc1_val);
+	LCD_Initialize();
+	LCD_Initialize();
 	
-//	arm_rfft_fast_f32_app();
 	  /* initialize S struct */ 
   while (1)
   {
-
-		/*10kHz Sinwave Amp=825mV DCBias=1.65V */ 
-//		testInput_f32[i] = 1000*arm_sin_f32(PI2*i*2000.0/Fs) + 1500;
-    
-//		HAL_DAC_SetValue(&hdac, DAC_CHANNEL_1, DAC_ALIGN_12B_R, sinewave_val[i]);//设定DAC通道1（PA4的值）[0-4095]
-//    temp = ADC_GetValue(&hadc1);
 //		i++;
 ////		VOSC_SendOne_uint16(&huart2, sinewave_val[i]);
 //    if(i==1000) i=0;
@@ -157,7 +149,6 @@ int main(void)
 ////			{
 ////				if(fftout_amp[i]>50000)
 ////					test_freq = 195*i;
-////					VOSC_SendOne_uint16(&huart2, (uint16_t)temp);
 ////				VOSC_SendTwo_uint16(&huart2, (uint16_t)fftout_amp[i],test_freq);
 ////			}
 ////			i=0;

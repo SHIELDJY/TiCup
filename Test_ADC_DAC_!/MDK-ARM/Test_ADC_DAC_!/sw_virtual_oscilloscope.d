@@ -38,4 +38,5 @@ test_adc_dac_!/sw_virtual_oscilloscope.o: \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\math.h \
-  ..\Drivers\SW_Driver\SW_Virtual_Oscilloscope.h
+  ..\Drivers\SW_Driver\SW_Virtual_Oscilloscope.h \
+  ..\Drivers\HW_Driver\HW_GPU35C.h

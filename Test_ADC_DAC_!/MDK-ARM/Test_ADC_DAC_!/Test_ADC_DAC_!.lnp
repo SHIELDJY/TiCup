@@ -3,6 +3,7 @@
 "test_adc_dac_!\main.o"
 "test_adc_dac_!\stm32f4xx_it.o"
 "test_adc_dac_!\stm32f4xx_hal_msp.o"
+"test_adc_dac_!\sw_virtual_oscilloscope.o"
 "test_adc_dac_!\stm32f4xx_hal_adc.o"
 "test_adc_dac_!\stm32f4xx_hal_adc_ex.o"
 "test_adc_dac_!\stm32f4xx_hal_dac.o"
@@ -25,7 +26,7 @@
 "test_adc_dac_!\stm32f4xx_hal_exti.o"
 "test_adc_dac_!\system_stm32f4xx.o"
 "..\Drivers\CMSIS\Lib\ARM\arm_cortexM4lf_math.lib"
-"test_adc_dac_!\sw_virtual_oscilloscope.o"
+"test_adc_dac_!\hw_gpu35c.o"
 --library_type=microlib --strict --scatter "Test_ADC_DAC_!\Test_ADC_DAC_!.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

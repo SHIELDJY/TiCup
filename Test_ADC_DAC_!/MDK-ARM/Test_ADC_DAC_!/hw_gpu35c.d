@@ -1,5 +1,5 @@
-test_adc_dac_!/main.o: ..\Src\main.c ..\Inc\main.h \
-  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
+test_adc_dac_!/hw_gpu35c.o: ..\Drivers\HW_Driver\HW_GPU35C.c \
+  ..\Inc\main.h ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   ..\Inc\stm32f4xx_hal_conf.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h \
@@ -38,9 +38,4 @@ test_adc_dac_!/main.o: ..\Src\main.c ..\Inc\main.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\Drivers\SW_Driver\SW_Virtual_Oscilloscope.h \
-  ..\Drivers\HW_Driver\HW_GPU35C.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
-  D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_const_structs.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_math.h \
-  ..\Drivers\CMSIS\DSP\Include\arm_common_tables.h
+  ..\Drivers\HW_Driver\HW_GPU35C.h
