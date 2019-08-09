@@ -38,4 +38,5 @@ test_adc_dac_!/stm32f4xx_it.o: ..\Src\stm32f4xx_it.c ..\Inc\main.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\Drivers\SW_Driver\SW_Virtual_Oscilloscope.h \
-  ..\Drivers\HW_Driver\HW_GPU35C.h ..\Inc\stm32f4xx_it.h
+  ..\Drivers\HW_Driver\HW_GPU35C.h ..\Inc\initial.h \
+  ..\Inc\stm32f4xx_it.h

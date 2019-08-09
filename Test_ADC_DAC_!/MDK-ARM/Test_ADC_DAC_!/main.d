@@ -38,7 +38,7 @@ test_adc_dac_!/main.o: ..\Src\main.c ..\Inc\main.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\stdio.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\math.h \
   ..\Drivers\SW_Driver\SW_Virtual_Oscilloscope.h \
-  ..\Drivers\HW_Driver\HW_GPU35C.h \
+  ..\Drivers\HW_Driver\HW_GPU35C.h ..\Inc\initial.h \
   ..\Drivers\CMSIS\DSP\Include\arm_math.h \
   D:\software\Tiva\ARM\ KEIL\ARM\ARMCLANG\Bin\..\include\string.h \
   ..\Drivers\CMSIS\DSP\Include\arm_const_structs.h \

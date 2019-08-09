@@ -1,0 +1,5 @@
+Removed Pin From Net: NetName=Uo Pin=INOUT-1
+Removed Pin From Net: NetName=Ui Pin=INOUT-2
+Added Pin To Net: NetName=UoRAW Pin=INOUT-1
+Added Pin To Net: NetName=UiRAW Pin=INOUT-2
+Added Room: Name=Ciruit_Analyzer

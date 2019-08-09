@@ -3,6 +3,7 @@
 "test_adc_dac_!\main.o"
 "test_adc_dac_!\stm32f4xx_it.o"
 "test_adc_dac_!\stm32f4xx_hal_msp.o"
+"test_adc_dac_!\initial.o"
 "test_adc_dac_!\sw_virtual_oscilloscope.o"
 "test_adc_dac_!\stm32f4xx_hal_adc.o"
 "test_adc_dac_!\stm32f4xx_hal_adc_ex.o"

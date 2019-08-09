@@ -21,4 +21,8 @@ void LCD_Initialize(void);
 void LCD_Clear(void);
 void LCD_PrintChar(const char* str, uint16_t x, uint16_t y);
 void LCD_PrintUint16_t(uint16_t num, uint16_t x, uint16_t y);
+void LCD_PrintFloat(float num, uint16_t x, uint16_t y);
+void LCD_PlotInit(void);
+void LCD_PlotPoint(uint8_t data);
+void LCD_Plot(uint8_t* data);
 #endif /* __HW_GPU35C_H */

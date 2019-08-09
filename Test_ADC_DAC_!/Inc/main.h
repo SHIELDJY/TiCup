@@ -31,6 +31,7 @@ extern "C" {
 #include <math.h>
 #include "SW_Virtual_Oscilloscope.h"
 #include "HW_GPU35C.h"
+#include "initial.h"
 
 /* Private includes ----------------------------------------------------------*/
 
